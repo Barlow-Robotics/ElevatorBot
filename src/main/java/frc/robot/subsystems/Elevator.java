@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -25,6 +26,20 @@ public class Elevator extends SubsystemBase {
 
   public void raiseElevatorMax() {
     elevatorMotor.set(TalonFXControlMode.PercentOutput, 0.5);
+    if (limitSwitch.get() && elevatorMotor.get()>0.0) {
+      elevatorMotor.set(TalonFXControlMode.PercentOutput, 0.0);
+    }
+  }
+
+  public void moveElevator(double rotateVelocity) { // move elevator up & down w/ joystick
+   
+    double output = rotateVelocity;
+
+    if (rotateVelocity > 0.0 && limitSwitch.get()) {
+        output = 0.0;
+    }
+    
+    elevatorMotor.set(TalonSRXControlMode.PercentOutput, output);
   }
 
 }

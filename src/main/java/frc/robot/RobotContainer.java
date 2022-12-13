@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Elevator;
 
 import java.util.HashMap;
 
@@ -29,10 +30,11 @@ import edu.wpi.first.wpilibj2.command.*;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
-    private final DriveSubsystem m_drive = new DriveSubsystem();
+    private final DriveSubsystem driveSub = new DriveSubsystem();
+    private final Elevator elevatorSub = new Elevator();
 
-    Joystick m_driverController; // Joystick 1
-    Joystick m_operatorController; // Joystick 2
+    Joystick driverController; // Joystick 1
+    Joystick operatorController; // Joystick 2
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -43,13 +45,13 @@ public class RobotContainer {
         // loadTrajectories();
         // createAutonomousCommands();
 
-        m_drive.setDefaultCommand(
+        driveSub.setDefaultCommand(
                 // A split-stick arcade command, with forward/backward controlled by the left
                 // hand, and turning controlled by the right.
                 new RunCommand( // new instance
                         () -> {
-                            double x = -m_driverController.getRawAxis(Constants.Logitech_Dual_Action.Left_Stick_Y);
-                            double yaw = m_driverController.getRawAxis(Constants.Logitech_Dual_Action.Right_Stick_X);
+                            double x = -driverController.getRawAxis(Constants.Logitech_Dual_Action.Left_Stick_Y);
+                            double yaw = driverController.getRawAxis(Constants.Logitech_Dual_Action.Right_Stick_X);
                             // fancy exponential formulas to shape the controller inputs to be flat when
                             // only
                             // pressed a little, and ramp up as stick pushed more.
@@ -70,11 +72,22 @@ public class RobotContainer {
                             // speed.
                             // turn = turn * (-0.4 * Math.abs(speed) + 0.5);
 
-                            m_drive.drive(-speed, -turn * 0.4, false);
+                            driveSub.drive(-speed, -turn * 0.4, false);
                         },
-                        m_drive));
+                        driveSub));
 
     }
+
+    elevatorSub.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        new RunCommand( // new instance
+                () -> {
+                    double yaw = operatorController.getRawAxis(Constants.Logitech_Dual_Action.Right_Stick_X)
+                            * Constants.ElevatorConstants.maxElevatorOutput;
+                    elevatorMotor.rotateTurret(yaw);
+                },
+                elevatorSub));
 
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -85,17 +98,17 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        if (m_driverController == null) {
+        if (driverController == null) {
             System.out.println("Null driver controller, using joystick 1");
-            m_driverController = new Joystick(1);
+            driverController = new Joystick(1);
         }
 
-        if (m_operatorController == null) {
+        if (operatorController == null) {
             System.out.println("Null operator controller, using joystick 2");
-            m_operatorController = new Joystick(2);
+            operatorController = new Joystick(2);
         }
 
-        String controllerType = m_driverController.getName();
+        String controllerType = driverController.getName();
         System.out.println("The controller name is " + controllerType);
         // boolean controllerFound = false;
 
