@@ -62,6 +62,9 @@ public final class Constants {
     public static final class ElevatorConstants {
 
         public static final int elevatorMotorID = 0;
+        public static final int limitSwitchTopID = 9;
+        public static final int limitSwitchBottomID = 8;
+        public static final double maxElevatorOutput = 0;
     }
 
     public static final class VisionConstants {

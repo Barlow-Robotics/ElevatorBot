@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.commands.RaiseElevatorMax;
+import frc.robot.commands.RaiseElevatorMin;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Elevator;
 
@@ -29,12 +31,18 @@ import edu.wpi.first.wpilibj2.command.*;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-
+    
     private final DriveSubsystem driveSub = new DriveSubsystem();
     private final Elevator elevatorSub = new Elevator();
 
+    private final RaiseElevatorMax raiseElevatorMaxCom = new RaiseElevatorMax(elevatorSub);
+    private final RaiseElevatorMin raiseElevatorMinCom = new RaiseElevatorMin(elevatorSub);
+
     Joystick driverController; // Joystick 1
     Joystick operatorController; // Joystick 2
+
+    private JoystickButton raiseElevatorMaxButton; // Button A operator
+    private JoystickButton raiseElevatorMinButton; // Button B operator 
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -85,7 +93,7 @@ public class RobotContainer {
                 () -> {
                     double yaw = operatorController.getRawAxis(Constants.Logitech_Dual_Action.Right_Stick_X)
                             * Constants.ElevatorConstants.maxElevatorOutput;
-                    elevatorMotor.rotateTurret(yaw);
+                    elevatorSub.elevatorMotor.moveElevator(yaw);
                 },
                 elevatorSub));
 
@@ -112,6 +120,10 @@ public class RobotContainer {
         System.out.println("The controller name is " + controllerType);
         // boolean controllerFound = false;
 
+        raiseElevatorMaxButton = new JoystickButton(operatorController, Constants.Logitech_Dual_Action.Button_A);
+        raiseElevatorMinButton = new JoystickButton(operatorController, Constants.Logitech_Dual_Action.Button_B);
+
+        //when pressed blah blah
     }
 
     /**
