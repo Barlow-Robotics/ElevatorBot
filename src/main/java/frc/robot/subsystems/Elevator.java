@@ -60,4 +60,14 @@ public class Elevator extends SubsystemBase {
       elevatorMotor.set(TalonFXControlMode.PercentOutput, 0.0);
     }
   }
+
+  public void moveToPosition(double desPos) {
+    // desiredPosition is in inches 
+
+    
+  }
+
+  public double getPosition() {
+    return 0;
+  }
 }

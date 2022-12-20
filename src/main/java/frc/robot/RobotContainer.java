@@ -123,7 +123,8 @@ public class RobotContainer {
         raiseElevatorMaxButton = new JoystickButton(operatorController, Constants.Logitech_Dual_Action.Button_A);
         raiseElevatorMinButton = new JoystickButton(operatorController, Constants.Logitech_Dual_Action.Button_B);
 
-        //when pressed blah blah
+        raiseElevatorMaxButton.whenPressed(raiseElevatorMaxCom);
+        raiseElevatorMinButton.whenPressed(raiseElevatorMinCom);
     }
 
     /**
