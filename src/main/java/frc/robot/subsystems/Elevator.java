@@ -23,6 +23,9 @@ public class Elevator extends SubsystemBase {
     elevatorMotor = new WPI_TalonFX(Constants.ElevatorConstants.elevatorMotorID);
     limitSwitchTop = new DigitalInput(Constants.ElevatorConstants.limitSwitchTopID);
     limitSwitchBottom = new DigitalInput(Constants.ElevatorConstants.limitSwitchBottomID);
+    elevatorMotor.configMotionCruiseVelocity(0);
+    elevatorMotor.configMotionAcceleration(0);
+    elevatorMotor.configMotionSCurveStrength(0);  
   }
 
   @Override
@@ -61,13 +64,12 @@ public class Elevator extends SubsystemBase {
     }
   }
 
-  public void moveToPosition(double desPos) {
+  public void moveToPosition(double desiredPosition) {
     // desiredPosition is in inches 
-
-    
+    elevatorMotor.set(TalonFXControlMode.MotionMagic, desiredPosition);
   }
 
   public double getPosition() {
-    return 0;
+    return elevatorMotor.getSelectedSensorPosition();
   }
 }

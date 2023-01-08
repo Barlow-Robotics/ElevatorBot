@@ -70,6 +70,9 @@ public final class Constants {
         public static final double sprocketRadius = 1; // in
         public static final double elevatorHeight = 40; // in
         public static final double elevatorMotorGearboxRatio = 10; // 10:1
+        
+
+        public static final double elevatorPositionTolerance = 2;
     }
 
     public static final class VisionConstants {
